@@ -10,18 +10,33 @@
       <uri>model://ground_plane</uri>
     </include>
 
-	
-    <!--LEFT HOLDER-->
-    <!--<include>
-      <uri>model://holder2</uri>
-      <pose>10 1 0 0 0 0</pose>
+
+    <!--TRAFFIC LIGHT-->
+    <include>
+      <uri>model://traffic_light</uri>
+      <pose>10 0 0 0 0 0</pose>
     </include>
-	-->
-    <!--RIGHT HOLDER-->
-    <!--<include>
-      <uri>model://holder3</uri>
-      <pose>10 -1 0 0 0 0</pose>
+
+
+    <!-- RED TRAFFIC LIGHT-->
+    <include>
+      <uri>model://Red_Traffic_Light</uri>
+      <pose>5 -1 0 0 0 0</pose>
     </include>
--->
+
+    <!--GREEN TRAFFIC LIGHT-->
+    <include>
+      <uri>model://Green_Traffic_Light</uri>
+      <pose>5 1 0 0 0 0</pose>
+    </include>
+
+    <!--YELLOW TRAFFIC LIGHT-->
+    <include>
+      <uri>model://Yellow_Traffic_Light</uri>
+      <pose>5 0 0 0 0 0</pose>
+    </include>
+
+
+
   </world>
 </sdf>

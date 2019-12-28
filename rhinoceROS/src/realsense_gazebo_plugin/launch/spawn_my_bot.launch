@@ -12,16 +12,18 @@
   </include>
 
 <!-- set these parameters on Parameter Server -->
-<param name="robot_description" textfile="$(find realsense_gazebo_plugin)/urdf/rover.gazebo" />
+<param name="robot_description" textfile="$(find realsense_gazebo_plugin)/urdf/ar_rover.gazebo" />
 <param name="use_gui" value="false"/>
 <!--tfs for joints , robot state publisher publishes tfs for joints-->
    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
   
+<include file="$(find ar_track_alvar)/launch/ar_gazebo_front.launch"/>
+<include file="$(find ar_track_alvar)/launch/ar_gazebo_right.launch"/>
 
   <!-- Spawn dd_robot into Gazebo -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen"
-     args="-file $(find realsense_gazebo_plugin)/urdf/rover.gazebo -urdf -model rs200" />
+     args="-file $(find realsense_gazebo_plugin)/urdf/ar_rover.gazebo -urdf -model rs200" />
 
 </launch>
 

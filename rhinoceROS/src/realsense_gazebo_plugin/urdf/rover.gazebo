@@ -22,7 +22,7 @@
         <box size="0.8 0.6 0.1"/>
       </geometry>
 	<origin xyz="0 0 0.1"/>
-	
+
   </visual>
 
   </link>
@@ -716,7 +716,7 @@
             <offset>0 0 0</offset>
             <drift>0.0 0.0 0.0</drift>
             <gaussianNoise>1.3e-2 1.3e-2 1.3e-2</gaussianNoise>
-        </plugin>   
+        </plugin>
 </gazebo>
 
 <!--..................................................................................-->
@@ -778,10 +778,10 @@
       <velocityDrift>0 0 0</velocityDrift>
       <velocityGaussianNoise>0 0 0</velocityGaussianNoise>
      <!--<referenceLatitude>38.419354</referenceLatitude>-->
-     <!--<referenceLongitude>-110.781900</referenceLongitude-->  <!--for blacklister--> 
-     <!--<referenceLatitude>38.419853</referenceLatitude> 
+     <!--<referenceLongitude>-110.781900</referenceLongitude-->  <!--for blacklister-->
+     <!--<referenceLatitude>38.419853</referenceLatitude>
      <referenceLongitude>-110.781529</referenceLongitude>   for blacklister 1,2-->
-     <referenceLatitude>13.347590</referenceLatitude> 
+     <referenceLatitude>13.347590</referenceLatitude>
      <referenceLongitude>74.79208833</referenceLongitude>   <!--for workshop-->
     </plugin>
   </gazebo>
@@ -846,7 +846,7 @@
             </horizontal>
             <vertical>
                <samples>1</samples>
-               <resolution>1</resolution> 
+               <resolution>1</resolution>
           <max_angle>0.14835</max_angle>
           <min_angle>0</min_angle>
             </vertical>
