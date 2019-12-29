@@ -279,16 +279,16 @@
         <enable>true</enable>
         <light>
           <id>red/lamp</id>
-          <duration>2</duration>
-          <interval>9</interval>
+          <duration>3</duration>
+          <interval>7</interval>
 	  <color>0.902 0 0</color>
           <enable>true</enable>
         </light>
 
 	 <light>
           <id>orange/lamp</id>
-	  <interval>4</interval>
           <duration>2</duration>
+          <interval>11</interval>
 	  <color>1 0.4705 0</color>
           <enable>true</enable>
         </light>      
@@ -296,8 +296,8 @@
 
 	<light>
           <id>green/lamp</id>
-          <interval>7.2</interval>
-          <duration>2</duration>
+	  <duration>3</duration>
+          <interval>14</interval>
 	  <color>0.298 0.733 0.09</color>
           <enable>true</enable>
         </light>      
