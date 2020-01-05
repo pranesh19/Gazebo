@@ -11,31 +11,17 @@
     </include>
 
 
-    <!--TRAFFIC LIGHT-->
+    <!--HOLDER 5-->
     <include>
-      <uri>model://traffic_light</uri>
-      <pose>10 0 0 0 0 0</pose>
+      <uri>model://holder5</uri>
+      <pose>10 1 0 0 0 0</pose>
     </include>
 
-
-    <!-- RED TRAFFIC LIGHT-->
+    <!--HOLDER 6-->
     <include>
-      <uri>model://Red_Traffic_Light</uri>
-      <pose>5 -1 0 0 0 0</pose>
+      <uri>model://holder6</uri>
+      <pose>10 -1 0 0 0 0</pose>
     </include>
-
-    <!--GREEN TRAFFIC LIGHT-->
-    <include>
-      <uri>model://Green_Traffic_Light</uri>
-      <pose>5 1 0 0 0 0</pose>
-    </include>
-
-    <!--YELLOW TRAFFIC LIGHT-->
-    <include>
-      <uri>model://Yellow_Traffic_Light</uri>
-      <pose>5 0 0 0 0 0</pose>
-    </include>
-
 
 
   </world>
