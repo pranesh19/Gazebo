@@ -6,14 +6,16 @@ from math import *
 from sensor_msgs.msg import Imu
 from tf.transformations import euler_from_quaternion
 
-
 ob1 = Twist()
+
 
 def arduino_map(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-def cartesian_distance(lat1,lon1,lat2,lon2):
+
+def cartesian_distance(lat1, lon1, lat2, lon2):
     return sqrt((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2)
+
 
 def haversine(lat1, lon1, lat2, lon2):
     # distance between latitudes
@@ -34,6 +36,7 @@ def haversine(lat1, lon1, lat2, lon2):
     dist = rad * c
     return dist
 
+
 def bearing(lat1, lon1, lat2, lon2):
     global degree
     dLon = lon2 - lon1
@@ -47,10 +50,9 @@ def bearing(lat1, lon1, lat2, lon2):
         degree += 360
 
 
-
 def forward():
-    global  ob1
-    #print("FORWARD")
+    global ob1
+    # print("FORWARD")
     ob1.linear.x = 3.0
     ob1.linear.y = 0
     ob1.linear.z = 0
@@ -59,6 +61,7 @@ def forward():
     ob1.angular.y = 0
     ob1.angular.z = 0
     pub.publish(ob1)
+
 
 def backward():
     # print("BACKWARD")
@@ -108,12 +111,10 @@ ob2 = NavSatFix()
 ob3 = NavSatFix()
 
 
-
-
-def C(x,y):
-    global h,k,r
-    #TANGENT LENGTH
-    return sqrt(abs((x-h)**2+(y-k)**2-r**2))
+def C(x, y):
+    global h, k, r
+    # TANGENT LENGTH
+    return sqrt(abs((x - h) ** 2 + (y - k) ** 2 - r ** 2))
 
 
 def callback_imu(msg):
@@ -127,12 +128,12 @@ def callback_imu(msg):
     if heading < 0:
         heading += 360
 
+
 def callback_gps(msg):
     global x_r, y_r
 
     x_r = msg.latitude
     y_r = msg.longitude
-
 
 
 def displaydata(t, dist):
@@ -163,29 +164,27 @@ def displaydata(t, dist):
         left()
 
 
-
-
-#PRELIMINARY CALCULATIONS
+# PRELIMINARY CALCULATIONS
 #   GPS COORDINATES
 x_g = 38.4194184
-y_g =-110.7811492
+y_g = -110.7811492
 
 #   OBSTACLE CENTRE
 h = 38.4193545
-k =-110.7814121
+k = -110.7814121
 
 #   OBSTACLE WIDTH POINT
 x_o = 38.4192230
-y_o =-110.7814145
+y_o = -110.7814145
 
 #   RADIUS
-r = sqrt( (h-x_o)**2+ (k-y_o)**2 )
+r = sqrt((h - x_o) ** 2 + (k - y_o) ** 2)
 
 heading = 0
 degree = 0
 
-x_r=0
-y_r=0
+x_r = 0
+y_r = 0
 
 dist_gps = 10
 dist_A = 10
@@ -193,63 +192,54 @@ dist_B = 10
 dist_C = 10
 dist_D = 10
 
-def PointsOnCircle(h,k,r,n):
-    #return [(h + cos(2*pi/n*x)*r,k +sin(2*pi/n*x)*r) for x in range(0,n+1)]
-    for x in range(0,n+1):
-        ob2.latitude = h + cos(2*pi/n*x)*r
-        ob2.longitude= k + sin(2*pi/n*x)*r
+
+def PointsOnCircle(h, k, r, n):
+    # return [(h + cos(2*pi/n*x)*r,k +sin(2*pi/n*x)*r) for x in range(0,n+1)]
+    for x in range(0, n + 1):
+        ob2.latitude = h + cos(2 * pi / n * x) * r
+        ob2.longitude = k + sin(2 * pi / n * x) * r
         pub2.publish(ob2)
 
-def PlotPoint(lat1,lon1):
-    ob3.latitude  = lat1
+
+def PlotPoint(lat1, lon1):
+    ob3.latitude = lat1
     ob3.longitude = lon1
     pub3.publish(ob3)
 
 
 def bloody_calculate():
-    global x_r,y_r,x_g,y_g,dist_A,dist_B,dist_C,dist_D,dist_gps,h,k,r
+    global x_r, y_r, x_g, y_g, dist_A, dist_B, dist_C, dist_D, dist_gps, h, k, r
 
-
-
-    if x_r==0 or y_r ==0:
-        #print(1)
+    if x_r == 0 or y_r == 0:
+        # print(1)
         print(x_r, y_r)
         return
 
+    m = (y_g - y_r) / (x_g - x_r)
 
-    m = (y_g-y_r)/(x_g-x_r)
+    # LINE EQUATION:    y = mx+c
+    c = y_g - (m * x_g)
 
-    #LINE EQUATION:    y = mx+c
-    c = y_g -(m*x_g)
-
-
-    #CHECKING WHETHER ROVER IS IN LOS WITH THE OBSTACLE WRT THE GPS:
+    # CHECKING WHETHER ROVER IS IN LOS WITH THE OBSTACLE WRT THE GPS:
     # Discriminant should be greater than zero(or equal) to make an intersection with the obstacle
 
+    D = (2 * m * c - 2 * h - 2 * k * m) ** 2 - 4 * (1 + m ** 2) * (h ** 2 + k ** 2 + c ** 2 - r ** 2 - 2 * k * c)
 
+    if D >= 0:
+        # CHECK WHETHER LINE FORMED IS A SEGMENT BETWEEN THESE POINTS
 
+        # EXECUTE ESCAPE PROTOCOL
 
-    D = (2*m*c - 2*h -2*k*m)**2 - 4*(1+m**2)*(h**2+k**2+c**2-r**2-2*k*c)
-
-
-    if D>=0:
-    #CHECK WHETHER LINE FORMED IS A SEGMENT BETWEEN THESE POINTS
-
-
-
-    #EXECUTE ESCAPE PROTOCOL
-        
-        #ROVER SIDE
-        l1r = C(x_r,y_r)
+        # ROVER SIDE
+        l1r = C(x_r, y_r)
         l2r = r
-        l3r =cartesian_distance(x_r,y_r,h,k)
+        l3r = cartesian_distance(x_r, y_r, h, k)
 
-    
-        phi1r = atan2(k-y_r,h-x_r)
-        phi2r = acos( (l1r**2+l3r**2-l2r**2) / (2*l1r*l3r))
-        
-        #EQUATION 1 POINT
-        Cx1 = x_r + l1r * cos(phi1r + phi2r) 
+        phi1r = atan2(k - y_r, h - x_r)
+        phi2r = acos((l1r ** 2 + l3r ** 2 - l2r ** 2) / (2 * l1r * l3r))
+
+        # EQUATION 1 POINT
+        Cx1 = x_r + l1r * cos(phi1r + phi2r)
         Cy1 = y_r + l1r * sin(phi1r + phi2r)
 
         # EQUATION 2 POINT
@@ -259,9 +249,7 @@ def bloody_calculate():
         # GPS SIDE
         l1g = C(x_g, y_g)
         l2g = r
-        l3g =cartesian_distance(h,k,x_g,y_g)
-
-
+        l3g = cartesian_distance(h, k, x_g, y_g)
 
         phi1g = atan2(k - y_g, h - x_g)
         phi2g = acos((l1g ** 2 + l3g ** 2 - l2g ** 2) / (2 * l1g * l3g))
@@ -273,24 +261,21 @@ def bloody_calculate():
         # EQUATION 4 POINT
         Dx2 = x_g + l1g * cos(phi1g - phi2g)
         Dy2 = y_g + l1g * sin(phi1g - phi2g)
-    
-    
-        #CASE:1-  1 intersects with 3, 2 intersects with 4
+
+        # CASE:1-  1 intersects with 3, 2 intersects with 4
 
         # 1,3 intersection:
-        M1 = (Cy1 - y_r)/(Cx1-x_r)
-        M3 = (Dy1 - y_g)/(Dx1-x_g)
+        M1 = (Cy1 - y_r) / (Cx1 - x_r)
+        M3 = (Dy1 - y_g) / (Dx1 - x_g)
 
-        x13 = ((M3*x_g) -(M1*x_r)+y_r-y_g )/(M3 - M1)
-        y13 = M3 *(x13-x_g) + y_g
+        x13 = ((M3 * x_g) - (M1 * x_r) + y_r - y_g) / (M3 - M1)
+        y13 = M3 * (x13 - x_g) + y_g
 
         M2 = (Cy2 - y_r) / (Cx2 - x_r)
-        M4 = (Dy2- y_g) /  (Dx2 - x_g)
+        M4 = (Dy2 - y_g) / (Dx2 - x_g)
 
-        x24 = ((M4*x_g) -(M2*x_r)+y_r-y_g )/(M4 - M2)
-        y24 =  M4 *(x24-x_g) + y_g
-
-
+        x24 = ((M4 * x_g) - (M2 * x_r) + y_r - y_g) / (M4 - M2)
+        y24 = M4 * (x24 - x_g) + y_g
 
         # CASE:2-  1 intersects with 4, 2 intersects with 3
 
@@ -298,26 +283,24 @@ def bloody_calculate():
         M1 = (Cy1 - y_r) / (Cx1 - x_r)
         M4 = (Dy2 - y_g) / (Dx2 - x_g)
 
-        x14 = ((M4*x_g) -(M1*x_r)+y_r-y_g )/(M4 - M1)
-        y14 = M4 *(x14-x_g) + y_g
+        x14 = ((M4 * x_g) - (M1 * x_r) + y_r - y_g) / (M4 - M1)
+        y14 = M4 * (x14 - x_g) + y_g
 
         M2 = (Cy2 - y_r) / (Cx2 - x_r)
         M3 = (Dy1 - y_g) / (Dx1 - x_g)
 
-        x23 = ((M3*x_g) -(M2*x_r)+y_r-y_g )/(M3 - M2)
-        y23 = M3 *(x23-x_g) + y_g
-
+        x23 = ((M3 * x_g) - (M2 * x_r) + y_r - y_g) / (M3 - M2)
+        y23 = M3 * (x23 - x_g) + y_g
 
         dist_AC = haversine(h, k, x13, y13)
         dist_BC = haversine(h, k, x24, y24)
         dist_CC = haversine(h, k, x14, y14)
         dist_DC = haversine(h, k, x23, y23)
 
+        arr = [dist_AC, dist_BC, dist_CC, dist_DC]
+        index = min(range(len(arr)), key=arr.__getitem__)
 
-        arr = [dist_AC,dist_BC,dist_CC,dist_DC]
-        index =min(range(len(arr)), key=arr.__getitem__)
-
-        if index ==0:
+        if index == 0:
             while dist_A > 0.3:
                 print("dist_A")
                 dist_A = haversine(x_r, y_r, x13, y13)
@@ -327,13 +310,13 @@ def bloody_calculate():
 
             while dist_gps > 0.3:
                 print("GOAL IS WITHIN LOS")
-                dist_gps = haversine(x_r, y_r ,x_g, y_g)
+                dist_gps = haversine(x_r, y_r, x_g, y_g)
                 bearing(x_r, y_r, x_g, y_g)
                 t = heading - degree
                 displaydata(t, dist_gps)
             return "REACHED GOAL"
 
-        if index ==1:
+        if index == 1:
             while dist_B > 0.3:
                 print("dist_B")
                 dist_B = haversine(x_r, y_r, x24, y24)
@@ -343,13 +326,13 @@ def bloody_calculate():
 
             while dist_gps > 0.3:
                 print("GOAL IS WITHIN LOS")
-                dist_gps = haversine(x_r, y_r ,x_g, y_g)
+                dist_gps = haversine(x_r, y_r, x_g, y_g)
                 bearing(x_r, y_r, x_g, y_g)
                 t = heading - degree
                 displaydata(t, dist_gps)
             return "REACHED GOAL"
 
-        if index ==2:
+        if index == 2:
             while dist_C > 0.3:
                 print("dist_C")
                 dist_C = haversine(x_r, y_r, x14, y14)
@@ -357,16 +340,15 @@ def bloody_calculate():
                 t = heading - degree
                 displaydata(t, dist_C)
 
-
             while dist_gps > 0.3:
                 print("GOAL IS WITHIN LOS")
-                dist_gps = haversine(x_r, y_r ,x_g, y_g)
+                dist_gps = haversine(x_r, y_r, x_g, y_g)
                 bearing(x_r, y_r, x_g, y_g)
                 t = heading - degree
                 displaydata(t, dist_gps)
             return "REACHED GOAL"
 
-        if index ==3:
+        if index == 3:
             while dist_D > 0.3:
                 print("dist_D")
                 dist_D = haversine(x_r, y_r, x23, y23)
@@ -376,17 +358,17 @@ def bloody_calculate():
 
             while dist_gps > 0.3:
                 print("GOAL IS WITHIN LOS")
-                dist_gps = haversine(x_r, y_r ,x_g, y_g)
+                dist_gps = haversine(x_r, y_r, x_g, y_g)
                 bearing(x_r, y_r, x_g, y_g)
                 t = heading - degree
                 displaydata(t, dist_gps)
             return "REACHED GOAL"
-    
+
     else:
-        #print("GOAL IS WITHIN LOS")
+        # print("GOAL IS WITHIN LOS")
         if dist_gps > 0.3:
             print("GOAL IS WITHIN LOS")
-            dist_gps = haversine(x_r, y_r ,x_g, y_g)
+            dist_gps = haversine(x_r, y_r, x_g, y_g)
             bearing(x_r, y_r, x_g, y_g)
             t = heading - degree
             displaydata(t, dist_gps)
@@ -394,12 +376,7 @@ def bloody_calculate():
             return "REACHED GOAL"
 
 
-
-
-
-
 def talk_listen():
-
     rospy.Subscriber("gps_topic", NavSatFix, callback_gps)
     rospy.Subscriber("imu_data", Imu, callback_imu)
 
@@ -407,26 +384,23 @@ def talk_listen():
     PlotPoint(x_g, y_g)
     while not rospy.is_shutdown():
 
-        goal= bloody_calculate()
-        if goal =="REACHED GOAL":
+        goal = bloody_calculate()
+        if goal == "REACHED GOAL":
             print(goal)
             brutestop()
             break
 
-
         rospy.sleep(0.01)
+
 
 if __name__ == '__main__':
     try:
-        pub = rospy.Publisher('champ', Twist, queue_size=10)
+        pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         pub2 = rospy.Publisher('obstacle_circumference', NavSatFix, queue_size=10)
         pub3 = rospy.Publisher('point_plotter', NavSatFix, queue_size=10)
         rospy.init_node('talker', anonymous=True)
         rate = rospy.Rate(50)
 
-
         talk_listen()
     except rospy.ROSInterruptException:
         pass
-
-
