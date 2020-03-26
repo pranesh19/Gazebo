@@ -37,7 +37,7 @@ displays:
       visible: true
       collapsed: false
       frame: odom
-      image: /home/leander/Rover_Codes_2020/GUI/mapviz/rover_vector.png
+      image: /home/leander/Gazebo/rhinoceROS/src/atreus/config/rover_vector.png
       width: 10
       height: 10
       offset_x: 0

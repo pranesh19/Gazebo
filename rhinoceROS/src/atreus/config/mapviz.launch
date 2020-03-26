@@ -9,8 +9,8 @@
     <param name="local_xy_origin" value="/wgs84"/>
     <rosparam param="local_xy_origins">
       [{ name: /wgs84,
-         latitude: 13.347590,          <!--(38.419354)   URC-->   <!--(13.347590)   WORKSHOP-->
-         longitude: 74.79208833,       <!--(-110.781900) URC-->   <!--(74.79208833) WORKSHOP-->
+         latitude: 38.419354,          <!--(38.419354)   URC-->   <!--(13.347590)   WORKSHOP-->
+         longitude: -110.781900,       <!--(-110.781900) URC-->   <!--(74.79208833) WORKSHOP-->
          altitude: 5,
          heading: 0.0}]
     </rosparam>
@@ -21,7 +21,7 @@
  <node pkg="swri_transform_util" type="gps_transform_publisher" name="gps_transform_publisher">
  	<remap from="gps" to="/gps_fix"/>
         <param name="parent_frame_id" value="/map"/>
-        <param name="child_frame_id" value="/base_link"/>
+        <param name="child_frame_id" value="/odom"/>
     	<rosparam param="local_xy_origins">
     	</rosparam>
  </node>

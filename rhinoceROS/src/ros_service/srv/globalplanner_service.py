@@ -125,15 +125,42 @@ def gps_request():
 
 
 
-# GPS COORDINATES
+# GOAL GPS COORDINATES
 #x_g = 38.419823
 #y_g = -110.780039
 
-x_g = 38.419349
-y_g =-110.780511
+#x_g = 38.419349
+#y_g =-110.780511
+
+x_g, y_g = raw_input("ENTER GOAL GPS COORDINATES - ").split(" ")
+
+x_g = float(x_g)
+y_g = float(y_g)
 
 heading = 0
 degree = 0
+
+from math import sqrt
+f = open("blacklister.txt")
+row = None
+
+H, K, H2, K2 = [], [], [], []
+for l in f:
+    row = l.split()
+    if len(row) == 3:
+    	break
+    H.append(float(row[0]))
+    K.append(float(row[1]))
+    H2.append(float(row[2]))
+    K2.append(float(row[3]))
+f.close()
+
+print(len(row))
+if len(row) ==4:
+	f = open("blacklister.txt","w")
+	for i in range(len(H)):
+	    f.write(str(H[i]) + " " + str(K[i]) + " " + str(sqrt(  (H2[i] - H[i])**2  +  (K2[i] - K[i])**2)  ) + '\n')
+	f.close()
 
 f = open("blacklister.txt")
 
@@ -410,7 +437,7 @@ def bloody_calculate():
 
 
 def PointsOnCircle(h, k, r, n):
-    for x in range(0, n + 1):
+    for x in range(0, n + 2500):
         ob2.latitude  = h + cos(2 * pi / n * x) * r
         ob2.longitude = k + sin(2 * pi / n * x) * r
         pub2.publish(ob2)
@@ -469,14 +496,15 @@ def talk_listen():
         rospy.sleep(0.01)
 
 
-
+print(1)
 if __name__ == '__main__':
     try:
+    	
         pub2 = rospy.Publisher('obstacle_circumference', NavSatFix, queue_size=10)
         pub3 = rospy.Publisher('point_plotter', NavSatFix, queue_size=10)
         rospy.init_node('GPS_SERVER',anonymous=True,disable_signals=True)
         rate = rospy.Rate(50)
-
+        
         talk_listen()
 
     except rospy.ROSInterruptException:
