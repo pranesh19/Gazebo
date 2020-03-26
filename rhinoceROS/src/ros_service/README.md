@@ -41,3 +41,7 @@ Wait for the service till the blacklisted regions are plotted on mapviz. Finally
 #### Voilà!
 
 <img src="https://user-images.githubusercontent.com/45683974/77689641-05d1cf80-6fc8-11ea-8a4c-f7a5551b6a64.gif" width="900" height="500">
+
+Note that the generated path is made in reference to the rover's initial position. To change the rover's position and manually drive it with nothing but arrow keys, run the following command:
+
+    rosrun ros_service driving_key.py
