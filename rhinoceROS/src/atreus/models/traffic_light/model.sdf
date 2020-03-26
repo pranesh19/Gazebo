@@ -110,7 +110,7 @@
         </geometry>
   <material>
     <ambient>0 0 0 1</ambient>
-    <diffuse>1 0 0 1</diffuse>
+    <diffuse>0 0 0 1</diffuse>
     <specular>0.1 0.1 0.1 1</specular>
     <emissive>0 0 0 0</emissive>
   </material>
@@ -277,30 +277,32 @@
 
       <plugin name='light_control' filename='libLedPlugin.so'>
         <enable>true</enable>
-        <light>
-          <id>red/lamp</id>
-          <duration>3</duration>
-          <interval>7</interval>
-	  <color>0.902 0 0</color>
-          <enable>true</enable>
-        </light>
-
-	 <light>
-          <id>orange/lamp</id>
-          <duration>2</duration>
-          <interval>11</interval>
-	  <color>1 0.4705 0</color>
-          <enable>true</enable>
-        </light>      
-
 
 	<light>
           <id>green/lamp</id>
 	  <duration>3</duration>
-          <interval>14</interval>
+          <interval>6</interval>
 	  <color>0.298 0.733 0.09</color>
           <enable>true</enable>
         </light>      
+
+
+	 <light>
+          <id>orange/lamp</id>
+          <duration>2</duration>
+          <interval>10</interval>
+	  <color>1 0.4705 0</color>
+          <enable>true</enable>
+        </light>      
+
+        <light>
+          <id>red/lamp</id>
+          <duration>3</duration>
+          <interval>11</interval>
+	  <color>0.902 0 0</color>
+          <enable>true</enable>
+        </light>
+
 
 
     </plugin>

@@ -839,14 +839,14 @@
       <velocityGaussianNoise>0 0 0</velocityGaussianNoise>
       <frameName>gps_link</frameName>
       <frameId>gps_frame</frameId>
-     <!--<referenceLatitude>38.419354</referenceLatitude>-->
-     <!--<referenceLongitude>-110.781900</referenceLongitude-->  <!--for blacklister--> 
+      <referenceLatitude>38.419354</referenceLatitude>
+      <referenceLongitude>-110.781900</referenceLongitude>  <!--for blacklister--> 
      <!--<referenceLatitude>38.419853</referenceLatitude> 
      <referenceLongitude>-110.781529</referenceLongitude>   for blacklister 1,2-->
      <!--<referenceLatitude>13.347590</referenceLatitude> 
      <referenceLongitude>74.79208833</referenceLongitude>-->   <!--for workshop-->
-     <referenceLatitude>13.349863</referenceLatitude> 
-     <referenceLongitude>74.791369</referenceLongitude>   <!--for IRC-->
+     <!--<referenceLatitude>13.349863</referenceLatitude> 
+     <referenceLongitude>74.791369</referenceLongitude>-->   <!--for IRC-->
     </plugin>
   </gazebo>
 

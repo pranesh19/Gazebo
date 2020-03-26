@@ -64,9 +64,6 @@ def waypoint_generator(interval,azimuth,lat1,lng1,lat2,lng2):
     return coords
 
 
-def arduino_map(x, in_min, in_max, out_min, out_max):
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-
 
 def cartesian_distance(lat1, lon1, lat2, lon2):
     return sqrt((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2)
@@ -107,7 +104,7 @@ def callback_imu(msg):
     orientation_list = [msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w]
     (roll, pitch, yaw) = euler_from_quaternion(orientation_list)
 
-    heading = arduino_map(yaw, 0, -3, 0, 180)
+    heading = degrees(yaw)
 
     if heading < 0:
         heading += 360
