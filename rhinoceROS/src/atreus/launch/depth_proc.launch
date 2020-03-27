@@ -12,7 +12,7 @@
   <arg name="out_cloud" value="/$(arg camera_name)/camera/depth_registered/points"/>
 
 
-<node pkg="tf" type="static_transform_publisher" name="rviz_viewer" args="0 0 0 -1.5707 0 -1.5707 rs200_camera rs200_camera_rviz 100"/>
+<node pkg="tf" type="static_transform_publisher" name="rviz_viewer" args="0 0 0 -1.5708 0 -1.5708 rs200_camera rs200_camera_rviz 100"/>
 
 
   <node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" output="screen"/>
