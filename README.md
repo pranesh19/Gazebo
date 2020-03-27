@@ -14,7 +14,7 @@
 
 * Detection of slope angle and ditch depth by using a sonar panel.
 
-* Dynamic traversal using GPS and IMU to reach desired location.
+* Dynamic traversal using GPS and IMU to reach desired location alongside sonar obstacle avoidance.
 
 * Ability of localisation by using 2 independent EKFs.
 
