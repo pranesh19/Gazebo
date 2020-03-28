@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <robot name="nice_ride">
 
+
+<link name="dummy">
+   </link>
+
+
+
  <!--BASE-->
     <link name="base_link">
 
@@ -30,6 +36,13 @@
    <material>Gazebo/Blue</material>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
+
+  <joint name="dummy_joint" type="fixed">
+     <parent link="dummy"/>
+     <child link="base_link"/>
+   </joint>
+
+
 
 <!--HOLDER 1-->
 <link name="holder1">

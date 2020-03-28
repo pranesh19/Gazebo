@@ -44,4 +44,4 @@ Wait for the service till the blacklisted regions are plotted on mapviz. Finally
 
 Note that the generated path is made in reference to the rover's initial position. To change the rover's position and manually drive it with nothing but arrow keys, run the following command:
 
-    rosrun ros_service driving_key.py
+    rosrun atreus key_drive.py
