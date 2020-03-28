@@ -8,10 +8,7 @@ import time
 from sensor_msgs.msg import NavSatFix
 from math import *
 from pyproj import Geod
-
-
-def arduino_map(x, in_min, in_max, out_min, out_max):
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+from math import degrees
 
 
 wgs84_geod = Geod(ellps='WGS84')
@@ -24,8 +21,9 @@ def distance_bearing(lat1, lon1, lat2, lon2):
         degree += 360
 
 
-lat2 = 49.89990654904074
-lon2 = 8.899935283587306
+lat2, lon2 = raw_input("ENTER GOAL GPS COORDINATES - ").split(" ")
+lat2 = float(lat2)
+lon2 = float(lon2)
 
 pitch = 0.0
 roll = 0.0
@@ -37,15 +35,15 @@ ob1 = Twist()
 
 def short_angle(x, y):
     if abs(x - y) < 180.0:
-        return (abs(x - y))
+        return abs(x - y)
 
     else:
-        return (360.0 - abs(x - y))
+        return 360.0 - abs(x - y)
 
 
 def forward():
     # print("FORWARD")
-    ob1.linear.x = 2.0
+    ob1.linear.x = 0.5
     ob1.linear.y = 0
     ob1.linear.z = 0
 
@@ -76,7 +74,7 @@ def right():
 
     ob1.angular.x = 0
     ob1.angular.y = 0
-    ob1.angular.z = 2.5
+    ob1.angular.z = 1.0
     pub.publish(ob1)
 
 
@@ -88,7 +86,7 @@ def left():
 
     ob1.angular.x = 0
     ob1.angular.y = 0
-    ob1.angular.z = -2.5
+    ob1.angular.z = -1.0
     pub.publish(ob1)
 
 
@@ -119,52 +117,59 @@ def siderightcheck():
         return 1
 
 
-distance1 = Range()
-distance2 = Range()
-distance3 = Range()
-distance4 = Range()
+distance1 = 0.0
+distance2 = 0.0
+distance3 = 0.0
+distance4 = 0.0
 
 heading = 0
 degree = 0
 dist = 10.0
 
+threshold=0.45
+b_threshold=0.2
 
-def callback1(msg):
+
+def callback_fl(msg):
     global distance1
     distance1 = msg.range
     # print("DISTANCE1=",distance1)
 
 
-def callback2(msg):
+def callback_fr(msg):
     global distance2
     distance2 = msg.range
     # print("DISTANCE2=", distance2)
 
 
-def callback3(msg):
+def callback_bl(msg):
     global distance3
     distance3 = msg.range
     # print("DISTANCE3=", distance3)
 
 
-def callback4(msg):
+def callback_br(msg):
     global distance4
     distance4 = msg.range
     # print("DISTANCE4=", distance4)
 
+aligner = 0
 
-#
+
 def callback_imu(msg):
-    global heading
+    global heading, aligner
 
     orientation_list = [msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w]
     (roll, pitch, yaw) = euler_from_quaternion(orientation_list)
 
-    heading = arduino_map(yaw, 0, -3, 0, 180)
+    yaw = degrees(yaw)
+    if yaw < 0:
+        yaw += 360
+    yaw = (yaw + aligner) % 360
 
-    if heading < 0:
-        heading += 360
-
+    heading = 360 - yaw
+    #print(heading)
+    
 
 def callback_gps(msg):
     global lat2, lon2, lat1, lon1
@@ -172,12 +177,11 @@ def callback_gps(msg):
     lat1 = msg.latitude
     lon1 = msg.longitude
 
-    haversine(lat1, lon1, lat2, lon2)
-    bearing(lat1, lon1, lat2, lon2)
+    distance_bearing(lat1,lon1,lat2,lon2)
 
 
 def displaydata(t, dist):
-    if t < 10 and t > -10:
+    if 10 > t > -10:
         print("STRAIGHT", "DISTANCE=", dist)
         forward()
         #
@@ -186,13 +190,13 @@ def displaydata(t, dist):
 
     elif t <= -180:
         angle = 360 + t
-        print("ANTICLOCKWISE", angle, "DISTANCE=", dist)
+        print("ANTCLOCKWISE", angle, "DISTANCE=", dist)
         left()
         # p.ChangeDutyCycle(30)
         # q.ChangeDutyCycle(30)
         # return
 
-    elif t < 0 and t > -180:
+    elif 0 > t > -180:
         angle = -t
         print("CLOCKWISE", angle, "DISTANCE=", dist)
         right()
@@ -208,9 +212,9 @@ def displaydata(t, dist):
         # q.ChangeDutyCycle(30)
         # return
 
-    elif t > 0 and t < 180:
+    elif 0 < t < 180:
         angle = t
-        print("ANTICLOCKWISE", angle, "DISTANCE=", dist)
+        print("ANTCLOCKWISE", angle, "DISTANCE=", dist)
         left()
 
 
@@ -318,10 +322,10 @@ def ultrasonic():
 
 def listener():
 
-    rospy.Subscriber("/ultrasonic/front/left", Range, callback1)
-    rospy.Subscriber("/ultrasonic/front/right", Range, callback2)
-    rospy.Subscriber("/ultrasonic/back/left", Range, callback3)
-    rospy.Subscriber("/ultrasonic/back/right", Range, callback4)
+    rospy.Subscriber("/ultrasonic/front/left", Range, callback_fl)
+    rospy.Subscriber("/ultrasonic/front/right", Range, callback_fr)
+    rospy.Subscriber("/ultrasonic/back/left", Range, callback_bl)
+    rospy.Subscriber("/ultrasonic/back/right", Range, callback_br)
 
     rospy.Subscriber("/imu", Imu, callback_imu)
     rospy.Subscriber("/fix", NavSatFix, callback_gps)
@@ -338,6 +342,7 @@ def listener():
             continue
 
         t = heading - degree
+
         if dist<1.0:
             print("GOAL REACHED")
             brutestop()
@@ -348,10 +353,9 @@ def listener():
 
 if __name__ == '__main__':
     try:
-        global ob1
         pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         rospy.init_node('Communication', anonymous=True,disable_signals=True)
-        rate = rospy.Rate(50)  
+        rate = rospy.Rate(50)
 
 
         listener()
