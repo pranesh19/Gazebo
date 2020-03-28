@@ -29,6 +29,11 @@ Before and after **RanSAC**:
 
       rosrun atreus cloudy
       
+* Launch RViz:
+
+      rosrun rviz rviz -d `rospack find atreus`/rviz/pcl.rviz
+
+
 * Finally, run the directional obstacle avoidance code:
 
       rosrun atreus pcl_obstacle_avoidance.py
