@@ -8,7 +8,7 @@ This package contains a simulatory rover made up of basic shapes to improve func
 
 * [Detection of slope angle and ditch depth by using a sonar panel](https://github.com/leander-dsouza/Gazebo/tree/master/rhinoceROS/src/atreus/scripts/Slope%20and%20Ditch%20Detection).
 
-* [Dynamic traversal using GPS and IMU to reach desired location alongside sonar obstacle avoidance](https://github.com/leander-dsouza/Gazebo/tree/master/rhinoceROS/src/atreus/scripts/Dynamic%20Traversal%20with%20Sonar%20Obstacle%20Avoidance).
+* [Dynamic traversal using GPS and IMU to reach desired location along with sonar obstacle avoidance](https://github.com/leander-dsouza/Gazebo/tree/master/rhinoceROS/src/atreus/scripts/Dynamic%20Traversal%20with%20Sonar%20Obstacle%20Avoidance).
 
 * [Ability of localisation by using 2 independent EKFs](https://github.com/leander-dsouza/Gazebo/tree/master/rhinoceROS/src/atreus/scripts/Localization).
 
