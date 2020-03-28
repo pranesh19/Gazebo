@@ -6,7 +6,8 @@ The former was created in frame of reference of '/map' and is a combination of w
 latter was created in frame of reference of '/odom' and is just a combination of wheel odometry and IMU data.
 
 These two filters are purely independent of each other and are created for global and local use respectively.
-The global reference ensures stable but discrete data, whereas the local reference ensures continuous but is prone to drift over time.
+The global reference ensures stable but discrete data, whereas the local reference ensures continuous but is prone to drift over time. Moreover the localization node associated with the '/map' frame, outputs filtered GPS waypoints that can be echoed through the topic '/gps/filtered'.
+
 Based on usage, these EKFs can be toggled.
 
 ![Screenshot from 2020-03-28 22-17-32](https://user-images.githubusercontent.com/45683974/77828574-5b31ec00-7142-11ea-89af-a9368a007ba5.png)
