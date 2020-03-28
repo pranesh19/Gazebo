@@ -26,4 +26,4 @@ Follow the below tutorials to implement the same:
  
  <img src="https://user-images.githubusercontent.com/45683974/77821381-e5149180-710f-11ea-8326-a48ea194cc40.gif" width="900" height="400">
  
- <img src="https://user-images.githubusercontent.com/45683974/77821683-2e65e080-7112-11ea-86a3-80594b53654b.gif" width="900" height="400">
+ <img src="https://user-images.githubusercontent.com/45683974/77821683-2e65e080-7112-11ea-86a3-80594b53654b.gif" width="900" height="450">
