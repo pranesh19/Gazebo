@@ -11,7 +11,7 @@ ob1 = Twist()
 def forward():
     global  ob1
     #print("FORWARD")
-    ob1.linear.x = 1.0
+    ob1.linear.x = 4.0
     ob1.linear.y = 0
     ob1.linear.z = 0
 

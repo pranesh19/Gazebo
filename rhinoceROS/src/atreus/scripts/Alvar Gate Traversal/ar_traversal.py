@@ -136,7 +136,7 @@ def callback_pose(msg):
         right_distance = posz
 
     # print(posz, ar_heading,frame)
-    #print(left_distance,right_distance)
+    # print(left_distance,right_distance)
 
 
 def callback_imu(msg):
@@ -151,7 +151,7 @@ def callback_imu(msg):
     yaw = (yaw + aligner) % 360
 
     heading = 360 - yaw
-    #print(heading)
+    # print(heading)
 
 
 def centric():
@@ -202,7 +202,7 @@ def is_static_left():
     global left_distance
     k = left_distance
     time.sleep(0.5)
-    if k - left_distance !=0:
+    if k - left_distance != 0:
         return "not static"
     else:
         return "static"
@@ -212,27 +212,28 @@ def is_static_right():
     global right_distance
     k = right_distance
     time.sleep(0.5)
-    if k - right_distance !=0:
+    if k - right_distance != 0:
         return "not static"
     else:
         return "static"
+
 
 flag = 0
 ui = 0
 gui = 0
 
+
 def midpoint_follower():
-    global ar_heading, frame, gate, ar_id, still_angle, count, k, left_distance, right_distance, flag, posz, ui ,gui
+    global ar_heading, frame, gate, ar_id, still_angle, count, k, left_distance, right_distance, flag, posz, ui, gui
 
     if frame == 'color' or frame == 'ar_camera':
         # ALGORITHM CLIPPING:
         if posz > 4:
             return
 
-
         # PARALLEL ALIGNMENT
         while flag == 0:
-                   
+
             # CONFIRMATION THAT THE NEAREST AR TAG IS DETECTED:
 
             '''if (ar_id == 3 or ar_id == 5) or (ar_id == 7 or ar_id == 9):
@@ -249,7 +250,6 @@ def midpoint_follower():
                     rotate_left(1)
                     gui += 1'''
 
-
             if ar_id != -1 and count == 0:
                 k = ar_id
                 count = 1
@@ -261,14 +261,16 @@ def midpoint_follower():
             left()
 
         if gate == 'left' and flag == 0:
-            while ( (ar_id == 3 or ar_id == 5) or (ar_id == 7 or ar_id == 9)) and abs(left_distance - right_distance) > 0.2:
+            while ((ar_id == 3 or ar_id == 5) or (ar_id == 7 or ar_id == 9)) and abs(
+                    left_distance - right_distance) > 0.2:
                 backward()
             brutestop()
             rotate_right(90)
             brutestop()
-            flag +=1
+            flag += 1
 
-            while True:
+            for _  in range(5):
+                
                 if is_static_left() == "static" and is_static_right() == "not static":
                     rotate_left(1)
                     brutestop()
@@ -277,18 +279,23 @@ def midpoint_follower():
                     brutestop()
                 else:
                     forward()
+
+            while True:
+                forward()
 
 
 
         if gate == 'right' and flag == 0:
-            while ( (ar_id == 4 or ar_id == 6) or (ar_id == 8 or ar_id == 10)) and abs(left_distance - right_distance) > 0.2:
+            while ((ar_id == 4 or ar_id == 6) or (ar_id == 8 or ar_id == 10)) and abs(
+                    left_distance - right_distance) > 0.2:
                 forward()
             brutestop()
             rotate_right(90)
             brutestop()
-            flag +=1
+            flag += 1
 
-            while True:
+            for _  in range(5):
+
                 if is_static_left() == "static" and is_static_right() == "not static":
                     rotate_left(1)
                     brutestop()
@@ -298,8 +305,8 @@ def midpoint_follower():
                 else:
                     forward()
 
-
-
+            while True:
+                forward()
 
 def listener():
     rospy.Subscriber("/visualization_marker", Marker, callback_pose)
