@@ -45,14 +45,14 @@ For basic bot simulation:
 
 Errors
 ------------
--- 1) Run the following command if the traffic light does not glow red: 
+*  Run the following command if the traffic light does not glow red: 
 
-    sudo apt-get install ros-melodic-gazebo-* && sudo apt-get install gazebo9 && sudo apt-get install libgazebo9* && sudo apt-get --reinstall install libignition-math4 && sudo apt-get --reinstall install libignition-math4-dev && sudo apt-get upgrade
+        sudo apt-get install ros-melodic-gazebo-* && sudo apt-get install gazebo9 && sudo apt-get install libgazebo9* && sudo apt-get --reinstall install libignition-math4 && sudo apt-get --reinstall install libignition-math4-dev && sudo apt-get upgrade
     
--- 2) Run the following command if the GPS and IMU sensors values are not seen through a rostopic list: 
+*  Run the following command if the GPS and IMU sensors values are not seen through a rostopic list: 
 
-    sudo apt-get install ros-melodic-hector-gazebo-plugins
+        sudo apt-get install ros-melodic-hector-gazebo-plugins
 
--- 3) In case if you don't have the ROS package ar track alvar: 
+*  In case if you don't have the ROS package ar track alvar: 
 
-    sudo apt-get install ros-melodic-ar-track-alvar
+        sudo apt-get install ros-melodic-ar-track-alvar
