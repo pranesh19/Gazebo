@@ -4,19 +4,52 @@ import cv2
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import numpy as np
-from matplotlib import pyplot as plt
+
 
 
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5, 5))
 kernel1= cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3, 3))
 
+aratio = 1.0
+
+def nothing(x):
+    pass
+
+
+# *********************************************************************************************************************
+def adjust_gamma(image, gamma=1.0):
+    if gamma == 0:
+        gamma = 0.01
+
+    invGamma = 1.0 / gamma
+    table = np.array([((i / 255.0) ** invGamma) * 255
+                      for i in np.arange(0, 256)]).astype("uint8")
+
+    return cv2.LUT(image, table)
+
+
+# *********************************************************************************************************************
+
+img1= np.zeros((300, 512, 3), np.uint8)
+cv2.namedWindow('GAMMA')
+
+cv2.createTrackbar('g', 'GAMMA', 1, 10, nothing)
 
 def callback(data):
+    global aratio
     br = CvBridge()
     frame1 = br.imgmsg_to_cv2(data)
-    frame=frame1
+    frame1 = cv2.cvtColor(frame1, cv2.COLOR_RGB2BGR)
+    frame = frame1
+    gamma = (cv2.getTrackbarPos('g', 'GAMMA')) * 0.1
+    cv2.imshow('GAMMA', img1)
+    frame = adjust_gamma(frame, gamma=gamma)
+
+    cv2.putText(frame, "g={}".format(gamma), (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
+
     #cv2.imshow("camera", frame)
-    hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    hsv = frame
     hsv = cv2.cvtColor(hsv, cv2.COLOR_BGR2HSV)  #RGB reading
     hsv = cv2.GaussianBlur(hsv, (5, 5), 0)
 
@@ -78,10 +111,23 @@ def callback(data):
 
     # DISPLAY................................................................................................................
 
-    cv2.imshow('frame', frame)
-    cv2.imshow('mask', mask)
-    cv2.imshow('res', res)
-    cv2.imshow('frame1', frame1)
+    cv2.putText(frame1, "ORIGINAL FRAME", (10, 460), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 3)
+    cv2.putText(frame, "OUTPUT FRAME", (10, 460), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 3)
+
+    cv2.putText(res, "RESULTANT", (10, 460), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 3)
+
+    mask = cv2.cvtColor(mask,cv2.COLOR_GRAY2BGR)
+    horizontal1 = np.hstack([frame1,frame])
+    horizontal2 = np.hstack((mask,res))
+    vertical = np.vstack((horizontal1,horizontal2))
+
+    '''cv2.imshow('GAMMA CORRECTED', frame)
+    cv2.imshow('MASK', mask)
+    cv2.imshow('RESULT', res)
+    cv2.imshow('ORIGINAL FRAME', frame1)'''
+
+    cv2.putText(vertical, "MASK", (10, 940), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 3)
+    cv2.imshow('RESULT', vertical)
 
     # .....................................................................................................................
     k = cv2.waitKey(5) & 0xFF
@@ -100,3 +146,4 @@ def listener():
 
 if __name__ == '__main__':
     listener()
+
