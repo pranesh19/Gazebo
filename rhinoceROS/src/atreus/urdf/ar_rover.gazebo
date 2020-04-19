@@ -772,7 +772,7 @@
       <plugin name="magnetometer" filename="libhector_gazebo_ros_magnetic.so">
             <updateRate>50.0</updateRate>
             <bodyName>base_link</bodyName>
-            <topicName>magnetometer</topicName>
+            <topicName>/mag</topicName>
             <offset>0 0 0</offset>
             <drift>0.0 0.0 0.0</drift>
             <gaussianNoise>1.3e-2 1.3e-2 1.3e-2</gaussianNoise>
@@ -832,7 +832,7 @@
       <updateRate>50</updateRate>
       <bodyName>base_gps_front</bodyName>
       <topicName>fix</topicName>
-      <velocityTopicName>gps_velocity</velocityTopicName>
+      <velocityTopicName>vel</velocityTopicName>
       <drift>5.0 5.0 5.0</drift>
       <gaussianNoise>0 0 0</gaussianNoise>
       <velocityDrift>0 0 0</velocityDrift>

@@ -4,9 +4,7 @@ This package is a glorified global planner which generates the most efficient pa
 
 ## Tutorial:
 
-Copy the mapviz config file for this package into your home directory. For mapviz setup refer [here](https://github.com/leander-dsouza/Gazebo/blob/master/Mapviz%20Setup.docx) :
-    
-    sudo cp -f ~/Gazebo/rhinoceROS/src/ros_service/.mapviz_config ~ 
+For mapviz setup refer [here](https://github.com/leander-dsouza/Gazebo/blob/master/Mapviz%20Setup.docx) :
 
 Launch the designated rover from the atreus package:
     
@@ -45,3 +43,4 @@ Wait for the service till the blacklisted regions are plotted on mapviz. Finally
 Note that the generated path is made in reference to the rover's initial position. To change the rover's position and manually drive it with nothing but arrow keys, run the following command:
 
     rosrun atreus key_drive.py
+

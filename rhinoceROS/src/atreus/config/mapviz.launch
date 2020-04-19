@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-  <node pkg="mapviz" type="mapviz" name="mapviz"></node>
-
+  <node pkg="mapviz" type="mapviz" name="mapviz">
+  	<param name="config" value="$(find ros_service)/config/.globalplanner_config"/>
+  </node>
 
   <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
 
