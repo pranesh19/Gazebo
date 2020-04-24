@@ -50,7 +50,7 @@
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
     </inertial>
 
-    <collision name='collision'>
+    <!--<collision name='collision'>
 
       <geometry>
         <box size="0.0125 0.0125 0.19"/>
@@ -58,7 +58,7 @@
 	<origin xyz="0 0 0" rpy="0 0 0"/>
    	<material name="red"/>
 
-    </collision>
+    </collision>-->
 
     <visual>
 
@@ -95,7 +95,7 @@
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
     </inertial>
 
-    <collision name='collision'>
+    <!--<collision name='collision'>
 
       <geometry>
         <box size="0.0125 0.0125 0.19"/>
@@ -103,7 +103,7 @@
 	<origin xyz="0 0 0" rpy="0 0 0"/>
    	<material name="red"/>
 
-    </collision>
+    </collision>-->
 
     <visual>
 
@@ -903,7 +903,7 @@
       <ray>
          <scan>
             <horizontal>
-               <samples>11</samples>    <!--180/10-->
+               <samples>101</samples>    <!--180/100-->
                <resolution>1</resolution>
                <min_angle>-1.570795</min_angle>
                <max_angle>1.570795</max_angle>
