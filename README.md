@@ -1,5 +1,8 @@
 # The Ultimate Gazebo Workspace - rhinoceROS 🦏 #
 
+<img src="https://user-images.githubusercontent.com/45683974/81069255-40038a80-8eff-11ea-9e7d-93b5dcdf590c.png" width="900" height="420">
+
+
 ## Contents: 
 
 [ros_service](https://github.com/leander-dsouza/Gazebo/tree/master/rhinoceROS/src/ros_service) - A global planner service package. 
